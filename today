@@ -45,23 +45,19 @@ def get_today_path():
 def create_file(path):
     if not os.path.exists(path):
         copyfile(cache_path + "template.txt", path)
-        return(True)
-    return(False)
 
 
 def main():
     path = get_today_path()
-    file_unset = create_file(path)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--edit', action='store_true')
     args = parser.parse_args()
 
     if args.edit:
+        create_file(path)
         os.system("$EDITOR " + path)
-        file_unset = False
-
-    if file_unset:
+    elif not os.path.exists(path):
         path = cache_path + "default.txt"
 
     with open(path) as f:
